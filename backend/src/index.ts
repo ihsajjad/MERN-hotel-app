@@ -1,7 +1,8 @@
 import cors from "cors";
 import "dotenv/config";
-import express, { Request, Response } from "express";
+import express from "express";
 import mongoose from "mongoose";
+import usersRoute from "./routes/users";
 
 mongoose
   .connect(process.env.MONGODB_UR as string)
@@ -13,8 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.get("/api/text", async (req: Request, res: Response) => {
-  res.send({ message: "Hello from express endpoint!" });
-});
+// routes
+app.use("/api/users", usersRoute);
 
 app.listen(3000, () => console.log("server is running on port 3000"));
