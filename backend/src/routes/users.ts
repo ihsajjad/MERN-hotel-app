@@ -44,7 +44,7 @@ router.post(
           secure: process.env.NODE_ENV === "production",
           maxAge: 86400000,
         });
-        res.sendStatus(200);
+        res.status(200).send({ message: "Account was created successfully" });
       }
     } catch (error) {
       console.log(error);
