@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 import * as apiClient from "../api-client";
 import { useAppContext } from "../contexts/AppContext";
 
@@ -11,6 +12,7 @@ export type RegisterFormData = {
   lastName: string;
 };
 const Register = () => {
+  const navigate = useNavigate();
   const { showToast } = useAppContext();
   const {
     register,
@@ -22,9 +24,9 @@ const Register = () => {
   const mutation = useMutation(apiClient.register, {
     onSuccess: () => {
       showToast({ message: "Registration successfull", type: "SUCCESS" });
+      navigate("/");
     },
     onError: (error: Error) => {
-      console.log(error);
       showToast({ message: error.message, type: "ERROR" });
     },
   });
@@ -79,7 +81,7 @@ const Register = () => {
       <label htmlFor="" className="text-gray-700 text-sm font-bold flex-1">
         Password
         <input
-          type="text"
+          type="password"
           className="border rounded w-full py-1 px-2 font-normal"
           {...register("password", {
             required: "Password is required!",
@@ -99,7 +101,7 @@ const Register = () => {
       <label htmlFor="" className="text-gray-700 text-sm font-bold flex-1">
         Confirm Password
         <input
-          type="text"
+          type="password"
           className="border rounded w-full py-1 px-2 font-normal"
           {...register("confirmPassword", {
             validate: (val) => {
