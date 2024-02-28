@@ -21,7 +21,7 @@ const SignIn = () => {
 
   const mutation = useMutation(apiClient.signIn, {
     onSuccess: async () => {
-      showToast({ message: "Sign in successcull!", type: "SUCCESS" }); // show the
+      showToast({ message: "Sign in successfull!", type: "SUCCESS" }); // show the
       await queryClient.invalidateQueries("validateToken");
       navigate("/");
     },
@@ -79,7 +79,7 @@ const SignIn = () => {
           type="submit"
           className="bg-blue-600 text-white p-2 font-bold hover:bg-blue-500 text-xl"
         >
-          Sign up
+          Sign in
         </button>
       </div>
     </form>

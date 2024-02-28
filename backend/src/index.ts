@@ -7,7 +7,7 @@ import authRoutes from "./routes/auth";
 import usersRoutes from "./routes/users";
 
 mongoose
-  .connect(process.env.MONGODB_UR as string)
+  .connect(process.env.MONGODB_CONNECTION_STRING as string)
   .then(() => console.log("db is connected successfully"))
   .catch((err) => console.log(err));
 
