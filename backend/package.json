@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "./src/index.ts",
   "scripts": {
-    "start": "nodemon",
+    "dev": "nodemon",
+    "build": "yarn install && npx tsc",
+    "start": "node ./dist/index.js",
     "e2e": "cross-env DOTENV_CONFIG_PATH=.env.e2e nodemon"
   },
   "license": "MIT",
