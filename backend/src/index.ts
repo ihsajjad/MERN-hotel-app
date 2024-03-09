@@ -6,6 +6,7 @@ import express from "express";
 import mongoose from "mongoose";
 import path from "path";
 import authRoutes from "./routes/auth";
+import myHotelRoutes from "./routes/my-hotels";
 import usersRoutes from "./routes/users";
 
 mongoose
@@ -30,5 +31,6 @@ app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 // routes
 app.use("/api/users", usersRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/my-hotels", myHotelRoutes);
 
 app.listen(3000, () => console.log("server is running on port 3000"));
