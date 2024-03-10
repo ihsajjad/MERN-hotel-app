@@ -56,6 +56,7 @@ router.post(
 
       // step- 3: save the new hotel in our database
       const hotel = new Hotel(newHotel);
+
       await hotel.save();
 
       // step- 4: return a 201 status
@@ -66,5 +67,10 @@ router.post(
     }
   }
 );
+
+router.get("/get", async (req: Request, res: Response) => {
+  console.log("hitted");
+  res.send("Hellow world");
+});
 
 export default router;

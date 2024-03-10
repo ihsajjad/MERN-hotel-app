@@ -15,6 +15,7 @@ const DetailsSection = () => {
           type="text"
           className="border rounded w-full py-1 px-2 font-normal"
           {...register("name", { required: "This field is required!" })}
+          name="name"
         />
         {errors.name && (
           <span className="text-red-500 text-sm">{errors.name.message}</span>
