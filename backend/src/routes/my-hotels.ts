@@ -3,7 +3,8 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import multer from "multer";
 import verifyToken from "../middleware/auth";
-import Hotel, { HotelType } from "../models/hotel";
+import Hotel from "../models/hotel";
+import { HotelType } from "../shared/types";
 
 const router = express.Router();
 const storage = multer.memoryStorage();
