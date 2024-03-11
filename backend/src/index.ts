@@ -2,7 +2,7 @@ import { v2 as cloudinary } from "cloudinary";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import "dotenv/config";
-import express from "express";
+import express, { Request, Response } from "express";
 import mongoose from "mongoose";
 import path from "path";
 import authRoutes from "./routes/auth";
@@ -32,5 +32,9 @@ app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 app.use("/api/users", usersRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/my-hotels", myHotelRoutes);
+
+app.get("*", (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
+});
 
 app.listen(3000, () => console.log("server is running on port 3000"));
