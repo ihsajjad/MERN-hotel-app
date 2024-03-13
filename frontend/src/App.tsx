@@ -6,6 +6,7 @@ import AddHotel from "./pages/AddHotel";
 import EditHotel from "./pages/EditHotel";
 import MyHotels from "./pages/MyHotels";
 import Register from "./pages/Register";
+import Search from "./pages/Search";
 import SignIn from "./pages/SignIn";
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
           path="/search"
           element={
             <Layout>
-              <div>This is the Search page.</div>
+              <Search />
             </Layout>
           }
         />
