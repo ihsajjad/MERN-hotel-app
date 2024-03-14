@@ -54,7 +54,7 @@ router.get("/search", async (req: Request, res: Response) => {
 const constructSearchQuery = (queryParams: any) => {
   let constructedQuery: any = {};
 
-  if (queryParams.pagination) {
+  if (queryParams.destination) {
     constructedQuery.$or = [
       { city: new RegExp(queryParams.destination, "i") },
       { country: new RegExp(queryParams.destination, "i") },
