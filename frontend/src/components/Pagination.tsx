@@ -7,7 +7,6 @@ export type PaginationProps = {
 const Pagination = ({ page, pages, onPageChange }: PaginationProps) => {
   const pageNumbers = [];
   for (let i = 1; i <= pages; i++) pageNumbers.push(i);
-  console.log(pageNumbers);
 
   return (
     <div className="flex justify-center">
