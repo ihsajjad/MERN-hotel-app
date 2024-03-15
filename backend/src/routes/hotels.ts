@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { param, validationResult } from "express-validator";
 import Hotel from "../models/hotel";
 import { HotelSearchResponse } from "../shared/types";
 
@@ -6,7 +7,7 @@ const router = express.Router();
 
 router.get("/search", async (req: Request, res: Response) => {
   try {
-    const query = constructSearchQuery(req.query);
+    const query = await constructSearchQuery(req.query);
 
     let sortOptions = {};
     switch (req.query.sortOptions) {
@@ -28,7 +29,7 @@ router.get("/search", async (req: Request, res: Response) => {
 
     const skip = (pageNumber - 1) * pageSize;
 
-    const hotels = await Hotel.find(query)
+    const hotels = await Hotel.find(query) // todo: fix the query
       .sort(sortOptions)
       .skip(skip)
       .limit(pageSize);
@@ -50,6 +51,25 @@ router.get("/search", async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+router.get(
+  "/:id",
+  [param("id").notEmpty().withMessage("Hotel ID is required!")],
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty)
+      return res.status(400).json({ errors: errors.array() });
+
+    const id = req.params.id.toString();
+    try {
+      const hotel = await Hotel.findById(id);
+      res.status(200).json(hotel);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Error fetching hotel" });
+    }
+  }
+);
 
 const constructSearchQuery = (queryParams: any) => {
   let constructedQuery: any = {};

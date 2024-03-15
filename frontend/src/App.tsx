@@ -4,6 +4,7 @@ import "./index.css";
 import Layout from "./layouts/Layout";
 import AddHotel from "./pages/AddHotel";
 import EditHotel from "./pages/EditHotel";
+import HotelDetail from "./pages/HotelDetail";
 import MyHotels from "./pages/MyHotels";
 import Register from "./pages/Register";
 import Search from "./pages/Search";
@@ -28,6 +29,14 @@ function App() {
           element={
             <Layout>
               <Search />
+            </Layout>
+          }
+        />
+        <Route
+          path="/detail/:hotelId"
+          element={
+            <Layout>
+              <HotelDetail />
             </Layout>
           }
         />
