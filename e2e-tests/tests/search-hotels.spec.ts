@@ -22,8 +22,19 @@ test("Should show search result", async ({ page }) => {
   await page.goto(UI_URL);
 
   await page.getByPlaceholder("Where are you going?").fill("Chattogram");
-
   await page.getByRole("button", { name: "Search" }).click();
+
   await expect(page.getByText("Hotels found in Chattogram")).toBeVisible();
   await expect(page.getByText("Test Hotel")).toBeVisible();
+});
+
+test("Should show hotel detail", async ({ page }) => {
+  await page.goto(UI_URL);
+
+  await page.getByPlaceholder("Where are you going?").fill("Chattogram");
+  await page.getByRole("button", { name: "Search" }).click();
+
+  await page.getByText("Test Hotel").click();
+  await expect(page).toHaveURL(/detail/);
+  await expect(page.getByRole("button", { name: "Book Now" })).toBeVisible();
 });
