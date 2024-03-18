@@ -1,7 +1,11 @@
 import express, { Request, Response } from "express";
 import { param, validationResult } from "express-validator";
+import Stripe from "stripe";
+import verifyToken from "../middleware/auth";
 import Hotel from "../models/hotel";
 import { HotelSearchResponse } from "../shared/types";
+
+const stripe = new Stripe(process.env.STRIPE_API_KEY as string);
 
 const router = express.Router();
 
@@ -67,6 +71,84 @@ router.get(
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Error fetching hotel" });
+    }
+  }
+);
+
+router.post(
+  "/:hotelId/bookings/payment-intent",
+  verifyToken,
+  async (req: Request, res: Response) => {
+    const { numberOfNight } = await req.body;
+    const hotelId = req.params.hotelId;
+
+    const hotel = await Hotel.findById(hotelId);
+
+    if (!hotel) return res.status(400).json({ message: "Hotel not found" });
+
+    const totalCost = hotel.pricePerNight * numberOfNight;
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: totalCost * 100,
+      currency: "usd",
+      metadata: {
+        hotelId,
+        userId: req.userId,
+      },
+    });
+
+    if (!paymentIntent.client_secret)
+      return res
+        .status(500)
+        .json({ message: "Failed to create payment intent!" });
+
+    const response = {
+      paymentIntentId: paymentIntent.id,
+      clientSecret: paymentIntent.client_secret.toString(),
+      totalCost,
+    };
+
+    res.status(200).json(response);
+  }
+);
+
+router.post(
+  "/:hotelId/bookings",
+  verifyToken,
+  async (req: Request, res: Response) => {
+    try {
+      const paymentIntentId = await req.body.paymentIntentId;
+
+      const paymentIntent = await stripe.paymentIntents.retrieve(
+        paymentIntentId as string
+      );
+
+      if (!paymentIntent)
+        return res.status(400).json({ message: "payment intent not found" });
+
+      const { hotelId, userId } = paymentIntent.metadata;
+
+      if (hotelId !== req.params.hotelId || userId !== req.userId)
+        return res.status(400).json({ message: "payment intent mismatch" });
+
+      if (paymentIntent.status !== "succeeded")
+        return res.status(400).json({
+          message: `payment intent not successeded. Status: ${paymentIntent.status}`,
+        });
+
+      const newBooking = { ...req.body, userId: req.userId };
+
+      const hotel = await Hotel.findOneAndUpdate(
+        { _id: hotelId },
+        { $push: { bookings: newBooking } }
+      );
+
+      if (!hotel) return res.status(400).json({ message: "Hotel not found" });
+
+      res.sendStatus(200);
+    } catch (error) {
+      // console.log(error);
+      res.status(500).json({ message: "something went wrong" });
     }
   }
 );
