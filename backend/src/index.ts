@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import path from "path";
 import authRoutes from "./routes/auth";
 import hotelRoutes from "./routes/hotels";
+import myBookingsRoute from "./routes/my-bookings";
 import myHotelRoutes from "./routes/my-hotels";
 import usersRoutes from "./routes/users";
 
@@ -34,6 +35,7 @@ app.use("/api/users", usersRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/my-hotels", myHotelRoutes);
 app.use("/api/hotels", hotelRoutes);
+app.use("/api/my-bookings", myBookingsRoute);
 
 app.get("*", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
