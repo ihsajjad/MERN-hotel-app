@@ -5,6 +5,7 @@ import Layout from "./layouts/Layout";
 import AddHotel from "./pages/AddHotel";
 import Booking from "./pages/Booking";
 import EditHotel from "./pages/EditHotel";
+import Home from "./pages/Home";
 import HotelDetail from "./pages/HotelDetail";
 import MyBookings from "./pages/MyBookings";
 import MyHotels from "./pages/MyHotels";
@@ -22,7 +23,7 @@ function App() {
           path="/"
           element={
             <Layout>
-              <div>This is the home page.</div>
+              <Home />
             </Layout>
           }
         />
