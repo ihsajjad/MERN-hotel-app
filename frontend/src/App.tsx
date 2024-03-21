@@ -6,6 +6,7 @@ import AddHotel from "./pages/AddHotel";
 import Booking from "./pages/Booking";
 import EditHotel from "./pages/EditHotel";
 import HotelDetail from "./pages/HotelDetail";
+import MyBookings from "./pages/MyBookings";
 import MyHotels from "./pages/MyHotels";
 import Register from "./pages/Register";
 import Search from "./pages/Search";
@@ -89,6 +90,14 @@ function App() {
               element={
                 <Layout>
                   <MyHotels />
+                </Layout>
+              }
+            />
+            <Route
+              path="/my-bookings"
+              element={
+                <Layout>
+                  <MyBookings />
                 </Layout>
               }
             />
