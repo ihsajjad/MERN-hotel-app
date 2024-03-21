@@ -3,7 +3,7 @@ import { param, validationResult } from "express-validator";
 import Stripe from "stripe";
 import verifyToken from "../middleware/auth";
 import Hotel from "../models/hotel";
-import { HotelSearchResponse } from "../shared/types";
+import { BookingType, HotelSearchResponse } from "../shared/types";
 
 const stripe = new Stripe(process.env.STRIPE_API_KEY as string);
 
@@ -136,7 +136,7 @@ router.post(
           message: `payment intent not successeded. Status: ${paymentIntent.status}`,
         });
 
-      const newBooking = { ...req.body, userId: req.userId };
+      const newBooking: BookingType = { ...req.body, userId: req.userId };
 
       const hotel = await Hotel.findOneAndUpdate(
         { _id: hotelId },
